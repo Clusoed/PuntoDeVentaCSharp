@@ -54,20 +54,9 @@ namespace PuntoDeVenta
                 
                 if (updateInfo.IsNewVersionAvailable)
                 {
-                    var result = MessageBox.Show(
-                        $"¡Nueva versión disponible!\n\n" +
-                        $"Versión actual: {UpdateService.Instance.GetCurrentVersion()}\n" +
-                        $"Nueva versión: {updateInfo.Version}\n\n" +
-                        $"{updateInfo.ReleaseNotes}\n\n" +
-                        $"¿Desea abrir la página de descarga?",
-                        "🔄 Actualización Disponible",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Information);
-                    
-                    if (result == MessageBoxResult.Yes && !string.IsNullOrEmpty(updateInfo.DownloadUrl))
-                    {
-                        UpdateService.Instance.OpenDownloadPage(updateInfo.DownloadUrl);
-                    }
+                    // Mostrar diálogo de actualización con opción de descarga automática
+                    var updateDialog = new UpdateDialog(updateInfo);
+                    updateDialog.ShowDialog();
                 }
             }
             catch

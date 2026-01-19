@@ -1,0 +1,129 @@
+<Window x:Class="PuntoDeVenta.Views.UpdateDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="🔄 Actualización Disponible"
+        Height="320" Width="450"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#0f0f1a">
+    
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Título -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,20">
+            <TextBlock Text="🎉 ¡Nueva Versión Disponible!" 
+                       FontSize="22" 
+                       FontWeight="Bold"
+                       Foreground="#10b981"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+        
+        <!-- Info de versiones -->
+        <Border Grid.Row="1" Background="#1a1a2e" CornerRadius="10" Padding="15" Margin="0,0,0,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                    <TextBlock Text="Versión Actual" FontSize="11" Foreground="#64748b" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="txtCurrentVersion" Text="1.0.0" FontSize="20" FontWeight="Bold" Foreground="#94a3b8" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                </StackPanel>
+                
+                <TextBlock Grid.Column="1" Text="➜" FontSize="24" Foreground="#64748b" VerticalAlignment="Center" Margin="20,0"/>
+                
+                <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                    <TextBlock Text="Nueva Versión" FontSize="11" Foreground="#64748b" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="txtNewVersion" Text="1.1.0" FontSize="20" FontWeight="Bold" Foreground="#10b981" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        
+        <!-- Notas de la versión -->
+        <StackPanel Grid.Row="2" Margin="0,0,0,15">
+            <TextBlock Text="📝 Novedades:" FontSize="12" Foreground="#64748b" Margin="0,0,0,5"/>
+            <TextBlock x:Name="txtReleaseNotes" 
+                       Text="Mejoras y correcciones" 
+                       FontSize="13" 
+                       Foreground="#f8fafc"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+        
+        <!-- Barra de progreso (inicialmente oculta) -->
+        <StackPanel x:Name="progressPanel" Grid.Row="3" Visibility="Collapsed" Margin="0,10,0,0">
+            <TextBlock x:Name="txtStatus" 
+                       Text="Descargando..." 
+                       FontSize="12" 
+                       Foreground="#64748b"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,10"/>
+            <ProgressBar x:Name="progressBar" 
+                         Height="8" 
+                         Minimum="0" 
+                         Maximum="100"
+                         Background="#2d2d44"
+                         Foreground="#10b981"/>
+        </StackPanel>
+        
+        <!-- Botones -->
+        <Grid x:Name="buttonsPanel" Grid.Row="4" Margin="0,15,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="15"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="0" 
+                    x:Name="btnLater"
+                    Content="⏰ Más Tarde" 
+                    Background="#2d2d44"
+                    Foreground="#94a3b8"
+                    BorderThickness="0"
+                    Padding="20,12"
+                    FontSize="13"
+                    Cursor="Hand"
+                    Click="Later_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            
+            <Button Grid.Column="2" 
+                    x:Name="btnUpdate"
+                    Content="⬇️ Actualizar Ahora" 
+                    Background="#10b981"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Padding="20,12"
+                    FontSize="13"
+                    FontWeight="Bold"
+                    Cursor="Hand"
+                    Click="Update_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

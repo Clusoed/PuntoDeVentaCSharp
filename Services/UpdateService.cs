@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -21,15 +22,20 @@ namespace PuntoDeVenta.Services
         private static UpdateService? _instance;
         public static UpdateService Instance => _instance ??= new UpdateService();
         
-        // URL del archivo version.json en GitHub (rama main, raw)
+        // URLs de GitHub
         private const string VERSION_CHECK_URL = "https://raw.githubusercontent.com/Clusoed/PuntoDeVentaCSharp/main/version.json";
+        private const string DOWNLOAD_URL = "https://github.com/Clusoed/PuntoDeVentaCSharp/releases/latest/download/PuntoDeVenta.exe";
         
         private readonly HttpClient _httpClient;
+        
+        // Evento para reportar progreso de descarga
+        public event Action<int>? DownloadProgressChanged;
+        public event Action<string>? StatusChanged;
         
         public UpdateService()
         {
             _httpClient = new HttpClient();
-            _httpClient.Timeout = TimeSpan.FromSeconds(10);
+            _httpClient.Timeout = TimeSpan.FromMinutes(10); // Timeout largo para descargas
         }
         
         /// <summary>
@@ -61,6 +67,7 @@ namespace PuntoDeVenta.Services
             
             try
             {
+                StatusChanged?.Invoke("Verificando actualizaciones...");
                 var response = await _httpClient.GetStringAsync(VERSION_CHECK_URL);
                 var remoteInfo = JsonSerializer.Deserialize<RemoteVersionInfo>(response, 
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -83,7 +90,95 @@ namespace PuntoDeVenta.Services
         }
         
         /// <summary>
-        /// Abre la URL de descarga en el navegador
+        /// Descarga e instala la actualización automáticamente
+        /// </summary>
+        public async Task<bool> DownloadAndInstallUpdateAsync()
+        {
+            try
+            {
+                StatusChanged?.Invoke("Preparando descarga...");
+                
+                // Obtener la ruta del ejecutable actual
+                string currentExePath = Process.GetCurrentProcess().MainModule?.FileName ?? "";
+                if (string.IsNullOrEmpty(currentExePath))
+                    return false;
+                
+                string directory = Path.GetDirectoryName(currentExePath) ?? "";
+                string newExePath = Path.Combine(directory, "PuntoDeVenta_new.exe");
+                string oldExePath = Path.Combine(directory, "PuntoDeVenta_old.exe");
+                string updaterBatPath = Path.Combine(directory, "updater.bat");
+                
+                // Descargar el nuevo ejecutable
+                StatusChanged?.Invoke("Descargando actualización...");
+                
+                using (var response = await _httpClient.GetAsync(DOWNLOAD_URL, HttpCompletionOption.ResponseHeadersRead))
+                {
+                    response.EnsureSuccessStatusCode();
+                    
+                    var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+                    var downloadedBytes = 0L;
+                    
+                    using (var contentStream = await response.Content.ReadAsStreamAsync())
+                    using (var fileStream = new FileStream(newExePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                    {
+                        var buffer = new byte[8192];
+                        int bytesRead;
+                        
+                        while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        {
+                            await fileStream.WriteAsync(buffer, 0, bytesRead);
+                            downloadedBytes += bytesRead;
+                            
+                            if (totalBytes > 0)
+                            {
+                                var progress = (int)((downloadedBytes * 100) / totalBytes);
+                                DownloadProgressChanged?.Invoke(progress);
+                                StatusChanged?.Invoke($"Descargando... {progress}%");
+                            }
+                        }
+                    }
+                }
+                
+                StatusChanged?.Invoke("Preparando instalación...");
+                
+                // Crear script batch para reemplazar el ejecutable
+                string batchContent = $@"@echo off
+timeout /t 2 /nobreak > nul
+if exist ""{oldExePath}"" del /f /q ""{oldExePath}""
+move /y ""{currentExePath}"" ""{oldExePath}""
+move /y ""{newExePath}"" ""{currentExePath}""
+start """" ""{currentExePath}""
+del /f /q ""{oldExePath}""
+del ""%~f0""
+";
+                
+                await File.WriteAllTextAsync(updaterBatPath, batchContent);
+                
+                StatusChanged?.Invoke("Reiniciando aplicación...");
+                
+                // Ejecutar el script de actualización y cerrar la app
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = updaterBatPath,
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                });
+                
+                // Cerrar la aplicación actual
+                Environment.Exit(0);
+                
+                return true;
+            }
+            catch (Exception ex)
+            {
+                StatusChanged?.Invoke($"Error: {ex.Message}");
+                return false;
+            }
+        }
+        
+        /// <summary>
+        /// Abre la URL de descarga en el navegador (método alternativo)
         /// </summary>
         public void OpenDownloadPage(string url)
         {
