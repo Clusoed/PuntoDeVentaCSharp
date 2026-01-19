@@ -1,0 +1,168 @@
+<UserControl x:Class="PuntoDeVenta.Views.ConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- ========== HEADER ========== -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,25">
+            <TextBlock Text="⚙️ Configuración" 
+                       FontSize="28" 
+                       FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}"/>
+            <TextBlock Text="Ajustes generales del sistema" 
+                       FontSize="14" 
+                       Foreground="{StaticResource TextMutedBrush}"
+                       Margin="0,5,0,0"/>
+        </StackPanel>
+        
+        <!-- ========== CONTENIDO ========== -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Información de la Tienda -->
+                <Border Style="{StaticResource Card}" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="🏪 Información de la Tienda" 
+                                   FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   Margin="0,0,0,15"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,10,15">
+                                <TextBlock Text="Nombre de la Tienda" 
+                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                           Margin="0,0,0,5"/>
+                                <TextBox x:Name="txtNombreTienda" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         Text="Mi Tienda"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Grid.Row="0" Margin="10,0,0,15">
+                                <TextBlock Text="RIF" 
+                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                           Margin="0,0,0,5"/>
+                                <TextBox x:Name="txtRif" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         Text="J-12345678-0"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,10,0">
+                                <TextBlock Text="Dirección" 
+                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                           Margin="0,0,0,5"/>
+                                <TextBox x:Name="txtDireccion" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         Text="Av. Principal, Centro"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,0,0,0">
+                                <TextBlock Text="Teléfono" 
+                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                           Margin="0,0,0,5"/>
+                                <TextBox x:Name="txtTelefono" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         Text="0212-1234567"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Configuración Monetaria -->
+                <Border Style="{StaticResource Card}" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="💱 Configuración Monetaria" 
+                                   FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   Margin="0,0,0,15"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="Tasa de Cambio (Bs/USD)" 
+                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                           Margin="0,0,0,5"/>
+                                <TextBox x:Name="txtTasaCambio" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         Text="45.50"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                <TextBlock Text="Porcentaje IVA (%)" 
+                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                           Margin="0,0,0,5"/>
+                                <TextBox x:Name="txtIva" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         Text="16"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Licencia y Actualizaciones -->
+                <Border Style="{StaticResource Card}" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="🔐 Licencia y Actualizaciones" 
+                                   FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   Margin="0,0,0,15"/>
+                        
+                        <Grid Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="Estado de Licencia:" 
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <TextBlock x:Name="txtEstadoLicencia" Text="✅ Licencia Activa" 
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource AccentBrush}"
+                                           Margin="0,5,0,0"/>
+                            </StackPanel>
+                            
+                            <Button Content="🔄 Buscar Actualizaciones" 
+                                    Style="{StaticResource PrimaryButton}"
+                                    HorizontalAlignment="Right"
+                                    Click="BuscarActualizaciones_Click"/>
+                        </Grid>
+                        
+                        <Border Background="{StaticResource BackgroundTertiaryBrush}" 
+                                CornerRadius="8" Padding="15">
+                            <Grid>
+                                <StackPanel>
+                                    <TextBlock Text="Versión actual:" 
+                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    <TextBlock x:Name="txtVersion" Text="v1.2.0" 
+                                               FontSize="18" FontWeight="Bold"
+                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                               Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Botón Guardar -->
+                <Button Content="💾 Guardar Configuración" 
+                        Style="{StaticResource AccentButton}"
+                        FontSize="16"
+                        Padding="30,15"
+                        HorizontalAlignment="Left"
+                        Click="GuardarConfig_Click"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

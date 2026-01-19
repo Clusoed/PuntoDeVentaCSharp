@@ -1,0 +1,165 @@
+<Window x:Class="PuntoDeVenta.Views.ProductoDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Nuevo Producto" 
+        Height="650" Width="520"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BackgroundPrimaryBrush}"
+        ResizeMode="NoResize">
+    
+    <Grid Margin="25,18,25,18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <TextBlock Grid.Row="0" Text="📦 Nuevo Producto" 
+                   FontSize="18" FontWeight="Bold"
+                   Foreground="{StaticResource TextPrimaryBrush}"
+                   Margin="0,0,0,15"/>
+        
+        <!-- Fila 1: Código, Nombre, Categoría -->
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="130"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Código" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" Margin="0,0,0,4"/>
+                <TextBox x:Name="txtCodigo" Style="{StaticResource ModernTextBox}" FontSize="12" Padding="8,6" IsReadOnly="True" Background="#1a6366f1"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Nombre *" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" Margin="0,0,0,4"/>
+                <TextBox x:Name="txtNombre" Style="{StaticResource ModernTextBox}" FontSize="12" Padding="8,6"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="4">
+                <TextBlock Text="Categoría" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" Margin="0,0,0,4"/>
+                <ComboBox x:Name="cmbCategoria" FontSize="11" Padding="6,5"
+                          Style="{StaticResource ModernComboBox}">
+                    <ComboBoxItem Content="Alimentos" IsSelected="True"/>
+                    <ComboBoxItem Content="Bebidas"/>
+                    <ComboBoxItem Content="Lácteos"/>
+                    <ComboBoxItem Content="Limpieza"/>
+                    <ComboBoxItem Content="Otros"/>
+                </ComboBox>
+            </StackPanel>
+        </Grid>
+        
+        <!-- Fila 2: Unidad de Medida, Stock -->
+        <Grid Grid.Row="2" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Unidad de Medida" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" Margin="0,0,0,4"/>
+                <ComboBox x:Name="cmbUnidad" FontSize="11" Padding="6,5" 
+                          Style="{StaticResource ModernComboBox}"
+                          SelectionChanged="Unidad_SelectionChanged">
+                    <ComboBoxItem Content="Unidad" IsSelected="True"/>
+                    <ComboBoxItem Content="Kilogramo (Kg)"/>
+                    <ComboBoxItem Content="Litro (L)"/>
+                    <ComboBoxItem Content="Bulto"/>
+                    <ComboBoxItem Content="Caja"/>
+                    <ComboBoxItem Content="Paquete"/>
+                </ComboBox>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="2" x:Name="pnlUnidadesPorBulto" Visibility="Collapsed">
+                <TextBlock Text="Und/Bulto" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" Margin="0,0,0,4"/>
+                <TextBox x:Name="txtUnidadesPorBulto" Style="{StaticResource ModernTextBox}" FontSize="12" Padding="8,6" Text="1" TextChanged="UnidadesBulto_TextChanged"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="4">
+                <TextBlock x:Name="lblStock" Text="Stock" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" Margin="0,0,0,4"/>
+                <TextBox x:Name="txtStock" Style="{StaticResource ModernTextBox}" FontSize="12" Padding="8,6" Text="0" TextChanged="Stock_TextChanged"/>
+            </StackPanel>
+        </Grid>
+        
+        <!-- Fila 3: Precio Costo -->
+        <Grid Grid.Row="3" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock x:Name="lblPrecioCosto" Text="Precio de Costo (USD) *" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" Margin="0,0,0,4"/>
+                <TextBox x:Name="txtPrecioCosto" Style="{StaticResource ModernTextBox}" FontSize="12" Padding="8,6" Text="0.00" TextChanged="PrecioCosto_TextChanged"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="2" x:Name="pnlCostoUnidad" Visibility="Collapsed">
+                <TextBlock Text="Costo por Unidad" Foreground="#10b981" FontSize="11" Margin="0,0,0,4"/>
+                <TextBox x:Name="txtCostoUnidad" Style="{StaticResource ModernTextBox}" FontSize="12" Padding="8,6" IsReadOnly="True" Background="#1a10b981"/>
+            </StackPanel>
+        </Grid>
+        
+        <!-- Fila 4: % Ganancia y Precio Venta -->
+        <Grid Grid.Row="4" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="% Ganancia" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" Margin="0,0,0,4"/>
+                <Grid>
+                    <TextBox x:Name="txtPorcentajeGanancia" Style="{StaticResource ModernTextBox}" FontSize="12" Padding="8,6,25,6" Text="30" TextChanged="Ganancia_TextChanged"/>
+                    <TextBlock Text="%" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,8,0" FontSize="11"/>
+                </Grid>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="2">
+                <TextBlock x:Name="lblPrecioVenta" Text="Precio Venta (USD)" Foreground="{StaticResource AccentBrush}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <TextBox x:Name="txtPrecioVenta" Style="{StaticResource ModernTextBox}" FontSize="13" Padding="8,6" FontWeight="Bold" Text="0.00" IsReadOnly="True" Background="#1a3f51b5"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="4">
+                <TextBlock Text="💰 Ganancia/Und" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" Margin="0,0,0,4"/>
+                <TextBox x:Name="txtGananciaUnidad" Style="{StaticResource ModernTextBox}" FontSize="12" Padding="8,6" IsReadOnly="True" Background="#1a10b981" Text="$ 0.00"/>
+            </StackPanel>
+        </Grid>
+        
+        <!-- Info Bulto (solo visible cuando es bulto/caja) -->
+        <Border Grid.Row="5" x:Name="pnlInfoBulto" Visibility="Collapsed" Background="#1af59e0b" CornerRadius="6" Padding="10,8" Margin="0,0,0,10">
+            <StackPanel>
+                <TextBlock Text="📦 Venta por Bulto/Caja" Foreground="#f59e0b" FontSize="11" FontWeight="SemiBold"/>
+                <TextBlock x:Name="txtInfoBulto" Text="" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" Margin="0,3,0,0"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Descripción -->
+        <StackPanel Grid.Row="6">
+            <TextBlock Text="Descripción" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" Margin="0,0,0,4"/>
+            <TextBox x:Name="txtDescripcion" Style="{StaticResource ModernTextBox}" FontSize="12" Padding="8,6" Height="45" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top"/>
+        </StackPanel>
+        
+        <!-- Botones -->
+        <StackPanel Grid.Row="8" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Cancelar" Style="{StaticResource PrimaryButton}" Width="100" Padding="0,10" FontSize="12" Margin="0,0,10,0" Click="Cancelar_Click"/>
+            <Button Content="💾 Guardar" Style="{StaticResource AccentButton}" Width="120" Padding="0,10" FontSize="12" Click="Guardar_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

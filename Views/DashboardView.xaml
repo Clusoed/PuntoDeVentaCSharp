@@ -1,0 +1,220 @@
+<UserControl x:Class="PuntoDeVenta.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- ========== HEADER ========== -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,25">
+            <TextBlock Text="📊 Dashboard" 
+                       FontSize="28" 
+                       FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}"/>
+            <TextBlock Text="Resumen de las operaciones del día" 
+                       FontSize="14" 
+                       Foreground="{StaticResource TextMutedBrush}"
+                       Margin="0,5,0,0"/>
+        </StackPanel>
+        
+        <!-- ========== TARJETAS DE RESUMEN ========== -->
+        <Grid Grid.Row="1" Margin="0,0,0,25">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Tarjeta Ventas Hoy -->
+            <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="💰 VENTAS HOY" 
+                               FontSize="12" 
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextMutedBrush}"/>
+                    <TextBlock x:Name="txtVentasUsd" Text="$ 0.00" 
+                               FontSize="32" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource AccentBrush}"
+                               Margin="0,10,0,0"/>
+                    <TextBlock x:Name="txtVentasBs" Text="Bs 0.00" 
+                               FontSize="14" 
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Tarjeta Transacciones -->
+            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="10,0">
+                <StackPanel>
+                    <TextBlock Text="🧾 TRANSACCIONES" 
+                               FontSize="12" 
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextMutedBrush}"/>
+                    <TextBlock x:Name="txtTransacciones" Text="0" 
+                               FontSize="32" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource PrimaryBrush}"
+                               Margin="0,10,0,0"/>
+                    <TextBlock Text="facturas hoy" 
+                               FontSize="14" 
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Tarjeta Productos -->
+            <Border Grid.Column="2" Style="{StaticResource Card}" Margin="10,0">
+                <StackPanel>
+                    <TextBlock Text="📦 PRODUCTOS" 
+                               FontSize="12" 
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextMutedBrush}"/>
+                    <TextBlock x:Name="txtProductos" Text="0" 
+                               FontSize="32" 
+                               FontWeight="Bold"
+                               Foreground="#9b59b6"
+                               Margin="0,10,0,0"/>
+                    <TextBlock Text="en inventario" 
+                               FontSize="14" 
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Tarjeta Stock Bajo -->
+            <Border Grid.Column="3" Style="{StaticResource Card}" Margin="10,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="⚠️ STOCK BAJO" 
+                               FontSize="12" 
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextMutedBrush}"/>
+                    <TextBlock x:Name="txtStockBajo" Text="0" 
+                               FontSize="32" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource WarningBrush}"
+                               Margin="0,10,0,0"/>
+                    <TextBlock Text="productos" 
+                               FontSize="14" 
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        
+        <!-- ========== CONTENIDO INFERIOR ========== -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Últimas Ventas -->
+            <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,10,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" Text="📋 Últimas Ventas" 
+                               FontSize="16" 
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               Margin="0,0,0,15"/>
+                    
+                    <ListView x:Name="lstUltimasVentas" Grid.Row="1"
+                              Background="Transparent"
+                              BorderThickness="0"
+                              Foreground="{StaticResource TextPrimaryBrush}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Factura" Width="100" DisplayMemberBinding="{Binding Factura}"/>
+                                <GridViewColumn Header="Cliente" Width="150" DisplayMemberBinding="{Binding Cliente}"/>
+                                <GridViewColumn Header="Total" Width="100" DisplayMemberBinding="{Binding Total}"/>
+                                <GridViewColumn Header="Hora" Width="80" DisplayMemberBinding="{Binding Hora}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </Border>
+            
+            <!-- Acciones Rápidas -->
+            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="10,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" Text="⚡ Acciones Rápidas" 
+                               FontSize="16" 
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               Margin="0,0,0,15"/>
+                    
+                    <StackPanel Grid.Row="1">
+                        <!-- Tasa de Cambio -->
+                        <Border Background="{StaticResource BackgroundTertiaryBrush}" 
+                                CornerRadius="8" 
+                                Padding="12" 
+                                Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="💱 Tasa de Cambio" 
+                                           FontSize="13" 
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextMutedBrush}"
+                                           Margin="0,0,0,8"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" 
+                                               Text="1 USD =" 
+                                               FontSize="14"
+                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,8,0"/>
+                                    <TextBox x:Name="txtTasaCambio" 
+                                             Grid.Column="1"
+                                             Style="{StaticResource ModernTextBox}"
+                                             FontSize="16"
+                                             FontWeight="Bold"
+                                             TextAlignment="Right"
+                                             VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="2" 
+                                               Text=" Bs" 
+                                               FontSize="14"
+                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                               VerticalAlignment="Center"
+                                               Margin="5,0,0,0"/>
+                                </Grid>
+                                <Button Content="💾 Guardar Tasa" 
+                                        Style="{StaticResource PrimaryButton}"
+                                        Margin="0,10,0,0"
+                                        Click="GuardarTasa_Click"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Botones de Acciones -->
+                        <Button Content="➕ Nueva Venta" 
+                                Style="{StaticResource AccentButton}"
+                                Margin="0,0,0,10"
+                                Click="NuevaVenta_Click"/>
+                        <Button Content="📦 Agregar Producto" 
+                                Style="{StaticResource PrimaryButton}"
+                                Margin="0,0,0,10"
+                                Click="AgregarProducto_Click"/>
+                        <Button Content="👤 Nuevo Cliente" 
+                                Style="{StaticResource PrimaryButton}"
+                                Margin="0,0,0,10"
+                                Click="NuevoCliente_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

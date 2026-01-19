@@ -1,0 +1,135 @@
+<UserControl x:Class="PuntoDeVenta.Views.ClientesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- ========== HEADER ========== -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="👥 Contactos" 
+                           FontSize="28" 
+                           FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                <TextBlock Text="Gestión de clientes y proveedores" 
+                           FontSize="14" 
+                           Foreground="{StaticResource TextMutedBrush}"
+                           Margin="0,5,0,0"/>
+            </StackPanel>
+            
+            <Button Content="➕ Nuevo Contacto" 
+                    Style="{StaticResource AccentButton}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="NuevoCliente_Click"/>
+        </Grid>
+        
+        <!-- ========== BÚSQUEDA Y FILTRO ========== -->
+        <Grid Grid.Row="1" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="180"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Column="0" Margin="0,0,10,0">
+                <TextBox x:Name="txtBuscar" 
+                         Style="{StaticResource ModernTextBox}"
+                         TextChanged="TxtBuscar_TextChanged"/>
+                <TextBlock x:Name="txtBuscarPlaceholder"
+                           Text="🔍 Buscar contacto..." 
+                           Foreground="{StaticResource TextMutedBrush}"
+                           VerticalAlignment="Center"
+                           Margin="12,0,0,0"
+                           IsHitTestVisible="False"/>
+            </Grid>
+            
+            <ComboBox x:Name="cmbFiltroTipo" 
+                      Grid.Column="1"
+                      SelectedIndex="0"
+                      SelectionChanged="CmbFiltroTipo_SelectionChanged"
+                      Style="{StaticResource ModernComboBox}"
+                      Padding="12,10">
+                <ComboBoxItem Content="📋 Todos"/>
+                <ComboBoxItem Content="👤 Clientes"/>
+                <ComboBoxItem Content="🏪 Proveedores"/>
+            </ComboBox>
+        </Grid>
+        
+        <!-- ========== LISTA DE CLIENTES ========== -->
+        <Border Grid.Row="2" Style="{StaticResource Card}">
+            <DataGrid x:Name="dgClientes"
+                      AutoGenerateColumns="False"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      RowBackground="{StaticResource BackgroundTertiaryBrush}"
+                      AlternatingRowBackground="{StaticResource BackgroundSecondaryBrush}"
+                      Foreground="{StaticResource TextPrimaryBrush}"
+                      GridLinesVisibility="None"
+                      HeadersVisibility="Column"
+                      CanUserAddRows="False"
+                      IsReadOnly="True">
+                
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="{StaticResource BackgroundSecondaryBrush}"/>
+                        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+                        <Setter Property="Padding" Value="12,10"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Padding" Value="12,10"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="TIPO" Binding="{Binding Tipo}" Width="100"/>
+                    <DataGridTextColumn Header="NOMBRE" Binding="{Binding Nombre}" Width="*"/>
+                    <DataGridTextColumn Header="CÉDULA/RIF" Binding="{Binding Cedula}" Width="120"/>
+                    <DataGridTextColumn Header="TELÉFONO" Binding="{Binding Telefono}" Width="120"/>
+                    <DataGridTextColumn Header="EMAIL" Binding="{Binding Email}" Width="160"/>
+                    <DataGridTextColumn Header="OPERACIONES" Binding="{Binding TotalOperaciones}" Width="100"/>
+                    <DataGridTemplateColumn Header="ACCIONES" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="✏️" Background="Transparent" 
+                                            Foreground="{StaticResource PrimaryBrush}"
+                                            BorderThickness="0" Padding="8,4" Cursor="Hand"
+                                            Click="EditarContacto_Click"/>
+                                    <Button Content="🗑️" Background="Transparent" 
+                                            Foreground="{StaticResource DangerBrush}"
+                                            BorderThickness="0" Padding="8,4" Cursor="Hand"
+                                            Click="EliminarContacto_Click"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</UserControl>

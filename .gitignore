@@ -1,0 +1,43 @@
+# Build results
+bin/
+obj/
+publish/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+*.rsuser
+
+# NuGet
+*.nupkg
+packages/
+
+# IDE
+.idea/
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.db
+*.sqlite
+
+# Temporary files
+*.tmp
+*.temp
+
+# Excel exports (generated at runtime)
+*.xlsx
+!Plantilla_Productos.xlsx
+
+# Error files
+errors.txt

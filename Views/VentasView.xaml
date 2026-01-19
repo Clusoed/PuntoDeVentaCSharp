@@ -1,0 +1,267 @@
+<UserControl x:Class="PuntoDeVenta.Views.VentasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- ========== PANEL IZQUIERDO - PRODUCTOS ========== -->
+        <Grid Grid.Column="0" Margin="0,0,15,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                <TextBlock Text="💰 Nueva Venta" 
+                           FontSize="28" 
+                           FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                <TextBlock Text="Seleccione productos para agregar al carrito" 
+                           FontSize="14" 
+                           Foreground="{StaticResource TextMutedBrush}"
+                           Margin="0,5,0,0"/>
+            </StackPanel>
+            
+            <!-- Búsqueda -->
+            <Grid Grid.Row="1" Margin="0,0,0,15">
+                <TextBox x:Name="txtBuscar" 
+                         Style="{StaticResource ModernTextBox}"
+                         TextChanged="TxtBuscar_TextChanged"/>
+                <TextBlock x:Name="txtBuscarPlaceholder"
+                           Text="🔍 Buscar producto por nombre o código..." 
+                           Foreground="{StaticResource TextMutedBrush}"
+                           VerticalAlignment="Center"
+                           Margin="12,0,0,0"
+                           IsHitTestVisible="False"/>
+            </Grid>
+            
+            <!-- Lista de Productos -->
+            <Border Grid.Row="2" Style="{StaticResource Card}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="lstProductos">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{StaticResource BackgroundTertiaryBrush}" 
+                                        CornerRadius="8" 
+                                        Margin="0,0,0,8"
+                                        Padding="15"
+                                        Cursor="Hand">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="{Binding Nombre}" 
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                                            <TextBlock Text="{Binding Codigo}" 
+                                                       FontSize="12"
+                                                       Foreground="{StaticResource TextMutedBrush}"/>
+                                        </StackPanel>
+                                        
+                                        <TextBlock Grid.Column="1" 
+                                                   Text="{Binding PrecioFormateado}" 
+                                                   FontSize="16"
+                                                   FontWeight="Bold"
+                                                   Foreground="{StaticResource AccentBrush}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,15,0"/>
+                                        
+                                        <Button Grid.Column="2" 
+                                                Content="➕" 
+                                                Style="{StaticResource AccentButton}"
+                                                Padding="12,8"
+                                                Click="AgregarProducto_Click"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+        
+        <!-- ========== PANEL DERECHO - CARRITO ========== -->
+        <Border Grid.Column="1" Style="{StaticResource Card}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Selector Cliente y Método de Pago -->
+                <Grid Grid.Row="0" Margin="0,0,0,15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Cliente -->
+                    <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                        <TextBlock Text="👤 Cliente:" 
+                                   FontSize="12" 
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,0,0,5"/>
+                        <ComboBox x:Name="cmbCliente" 
+                                  Style="{StaticResource ModernComboBox}"
+                                  DisplayMemberPath="Nombre"
+                                  SelectedValuePath="Id"/>
+                    </StackPanel>
+                    
+                    <!-- Método de Pago -->
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Text="💳 Método de Pago:" 
+                                   FontSize="12" 
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,0,0,5"/>
+                        <ComboBox x:Name="cmbMetodoPago" 
+                                  Style="{StaticResource ModernComboBox}">
+                            <ComboBoxItem Content="Efectivo USD" IsSelected="True"/>
+                            <ComboBoxItem Content="Efectivo Bs"/>
+                            <ComboBoxItem Content="Transferencia"/>
+                            <ComboBoxItem Content="Pago Móvil"/>
+                            <ComboBoxItem Content="Tarjeta Débito"/>
+                            <ComboBoxItem Content="Tarjeta Crédito"/>
+                            <ComboBoxItem Content="Zelle"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
+                
+                <!-- Header Carrito -->
+                <StackPanel Grid.Row="1" Margin="0,0,0,15">
+                    <TextBlock Text="🛒 Carrito" 
+                               FontSize="18" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                </StackPanel>
+                
+                <!-- Lista del Carrito -->
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="lstCarrito">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{StaticResource BackgroundTertiaryBrush}" 
+                                        CornerRadius="8" 
+                                        Margin="0,0,0,8"
+                                        Padding="12">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <TextBlock Text="{Binding Nombre}" 
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            
+                                            <Button Grid.Column="1" 
+                                                    Content="✕" 
+                                                    Background="Transparent"
+                                                    Foreground="{StaticResource DangerBrush}"
+                                                    BorderThickness="0"
+                                                    Cursor="Hand"
+                                                    Click="EliminarDelCarrito_Click"/>
+                                        </Grid>
+                                        
+                                        <Grid Grid.Row="1" Margin="0,8,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                                <Button Content="-" Padding="8,4" Background="{StaticResource BackgroundSecondaryBrush}" 
+                                                        Foreground="{StaticResource TextPrimaryBrush}" BorderThickness="0"
+                                                        Click="DisminuirCantidad_Click"/>
+                                                <TextBlock Text="{Binding Cantidad}" 
+                                                           VerticalAlignment="Center"
+                                                           Margin="10,0"
+                                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                                <Button Content="+" Padding="8,4" Background="{StaticResource BackgroundSecondaryBrush}"
+                                                        Foreground="{StaticResource TextPrimaryBrush}" BorderThickness="0"
+                                                        Click="AumentarCantidad_Click"/>
+                                            </StackPanel>
+                                            
+                                            <TextBlock Grid.Column="2" 
+                                                       Text="{Binding SubtotalFormateado}" 
+                                                       FontWeight="Bold"
+                                                       Foreground="{StaticResource AccentBrush}"
+                                                       VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                
+                <!-- Totales -->
+                <Border Grid.Row="3" 
+                        Background="{StaticResource BackgroundTertiaryBrush}" 
+                        CornerRadius="8"
+                        Padding="15"
+                        Margin="0,15,0,15">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,8">
+                            <TextBlock Text="Subtotal:" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <TextBlock x:Name="txtSubtotal" Text="$ 0.00" 
+                                       HorizontalAlignment="Right"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,8">
+                            <TextBlock Text="IVA (16%):" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <TextBlock x:Name="txtIva" Text="$ 0.00" 
+                                       HorizontalAlignment="Right"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </Grid>
+                        <Border Height="1" Background="{StaticResource BorderBrush}" Margin="0,5"/>
+                        <Grid Margin="0,8,0,0">
+                            <TextBlock Text="TOTAL:" 
+                                       FontWeight="Bold" 
+                                       FontSize="16"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock x:Name="txtTotal" Text="$ 0.00" 
+                                       HorizontalAlignment="Right"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource AccentBrush}"/>
+                        </Grid>
+                        <TextBlock x:Name="txtTotalBs" Text="Bs 0.00" 
+                                   HorizontalAlignment="Right"
+                                   FontSize="14"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Botón Procesar Venta -->
+                <Button Grid.Row="4" 
+                        Content="💳 PROCESAR VENTA" 
+                        Style="{StaticResource AccentButton}"
+                        FontSize="16"
+                        Padding="20,15"
+                        Click="ProcesarVenta_Click"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

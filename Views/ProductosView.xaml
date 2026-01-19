@@ -1,0 +1,146 @@
+<UserControl x:Class="PuntoDeVenta.Views.ProductosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- ========== HEADER ========== -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="📦 Productos" 
+                           FontSize="28" 
+                           FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                <TextBlock Text="Gestión del inventario de productos" 
+                           FontSize="14" 
+                           Foreground="{StaticResource TextMutedBrush}"
+                           Margin="0,5,0,0"/>
+            </StackPanel>
+            
+            <Button Content="➕ Nuevo Producto" 
+                    Style="{StaticResource AccentButton}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="NuevoProducto_Click"/>
+        </Grid>
+        
+        <!-- ========== BARRA DE HERRAMIENTAS ========== -->
+        <Grid Grid.Row="1" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Column="0" Margin="0,0,15,0">
+                <TextBox x:Name="txtBuscar" 
+                         Style="{StaticResource ModernTextBox}"
+                         TextChanged="TxtBuscar_TextChanged"/>
+                <TextBlock x:Name="txtBuscarPlaceholder"
+                           Text="🔍 Buscar producto..." 
+                           Foreground="{StaticResource TextMutedBrush}"
+                           VerticalAlignment="Center"
+                           Margin="12,0,0,0"
+                           IsHitTestVisible="False"/>
+            </Grid>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="📋 Plantilla" 
+                        Style="{StaticResource PrimaryButton}"
+                        Margin="0,0,10,0"
+                        Click="GenerarPlantilla_Click"/>
+                <Button Content="📥 Importar" 
+                        Style="{StaticResource PrimaryButton}"
+                        Margin="0,0,10,0"
+                        Click="ImportarProductos_Click"/>
+                <Button Content="📤 Exportar" 
+                        Style="{StaticResource AccentButton}"
+                        Click="ExportarProductos_Click"/>
+            </StackPanel>
+        </Grid>
+        
+        <!-- ========== TABLA DE PRODUCTOS ========== -->
+        <Border Grid.Row="2" Style="{StaticResource Card}">
+            <DataGrid x:Name="dgProductos"
+                      AutoGenerateColumns="False"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      RowBackground="{StaticResource BackgroundTertiaryBrush}"
+                      AlternatingRowBackground="{StaticResource BackgroundSecondaryBrush}"
+                      Foreground="{StaticResource TextPrimaryBrush}"
+                      GridLinesVisibility="None"
+                      HeadersVisibility="Column"
+                      CanUserAddRows="False"
+                      IsReadOnly="True"
+                      SelectionMode="Single">
+                
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="{StaticResource BackgroundSecondaryBrush}"/>
+                        <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+                        <Setter Property="Padding" Value="12,10"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Padding" Value="12,10"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="CÓDIGO" Binding="{Binding Codigo}" Width="100"/>
+                    <DataGridTextColumn Header="NOMBRE" Binding="{Binding Nombre}" Width="*"/>
+                    <DataGridTextColumn Header="CATEGORÍA" Binding="{Binding Categoria}" Width="120"/>
+                    <DataGridTextColumn Header="PRECIO USD" Binding="{Binding PrecioFormateado}" Width="100"/>
+                    <DataGridTextColumn Header="STOCK" Binding="{Binding Stock}" Width="80"/>
+                    <DataGridTemplateColumn Header="ACCIONES" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="✏️" 
+                                            Background="Transparent" 
+                                            Foreground="{StaticResource PrimaryBrush}"
+                                            BorderThickness="0"
+                                            Padding="8,4"
+                                            Cursor="Hand"
+                                            ToolTip="Editar"
+                                            Click="EditarProducto_Click"/>
+                                    <Button Content="🗑️" 
+                                            Background="Transparent" 
+                                            Foreground="{StaticResource DangerBrush}"
+                                            BorderThickness="0"
+                                            Padding="8,4"
+                                            Cursor="Hand"
+                                            ToolTip="Eliminar"
+                                            Click="EliminarProducto_Click"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</UserControl>
