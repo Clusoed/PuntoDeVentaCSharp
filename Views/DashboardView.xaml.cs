@@ -1,16 +1,31 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
+using System.Windows.Threading;
 using PuntoDeVenta.Data;
 
 namespace PuntoDeVenta.Views
 {
     public partial class DashboardView : UserControl
     {
+        private readonly DispatcherTimer _timer;
+        
         public DashboardView()
         {
             InitializeComponent();
             LoadDashboardData();
+            
+            // Configurar timer para actualizar hora cada segundo
+            _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            _timer.Tick += (s, e) => ActualizarFechaHora();
+            _timer.Start();
+            ActualizarFechaHora();
+        }
+        
+        private void ActualizarFechaHora()
+        {
+            txtFecha.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy");
+            txtHora.Text = DateTime.Now.ToString("HH:mm:ss");
         }
         
         private void LoadDashboardData()
