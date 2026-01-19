@@ -1,6 +1,6 @@
 {
-    "version": "1.5.0",
+    "version": "1.5.1",
     "downloadUrl": "https://github.com/Clusoed/PuntoDeVentaCSharp/releases/latest/download/PuntoDeVenta.exe",
-    "releaseNotes": "v1.5.0 - Versión dinámica en sidebar y configuración, botón de actualizaciones mejorado",
-    "releaseDate": "2026-01-18"
+    "releaseNotes": "v1.5.1 - Versión dinámica en sidebar y configuración, botón de actualizaciones mejorado",
+    "releaseDate": "2026-01-19"
 }
