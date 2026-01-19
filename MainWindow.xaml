@@ -59,7 +59,7 @@
                 <!-- Footer -->
                 <StackPanel Grid.Row="2" Margin="20,0,20,20">
                     <Border Height="1" Background="{StaticResource BorderBrush}" Margin="0,0,0,15"/>
-                    <TextBlock Text="v1.2.0" 
+                    <TextBlock x:Name="txtVersion" Text="v1.4.0" 
                                FontSize="11" 
                                Foreground="{StaticResource TextMutedBrush}"
                                HorizontalAlignment="Center"/>

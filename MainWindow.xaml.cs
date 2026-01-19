@@ -24,6 +24,9 @@ namespace PuntoDeVenta
             NavigateTo("Dashboard");
             SetActiveButton(btnDashboard);
             
+            // Mostrar versión actual en el sidebar
+            txtVersion.Text = $"v{UpdateService.Instance.GetCurrentVersion()}";
+            
             // Verificar actualizaciones en segundo plano
             CheckForUpdatesAsync();
         }

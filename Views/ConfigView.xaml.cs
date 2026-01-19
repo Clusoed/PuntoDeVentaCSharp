@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using PuntoDeVenta.Data;
+using PuntoDeVenta.Services;
 
 namespace PuntoDeVenta.Views
 {
@@ -21,7 +22,7 @@ namespace PuntoDeVenta.Views
             txtTelefono.Text = Database.Instance.ObtenerConfiguracion("Telefono", "");
             txtTasaCambio.Text = Database.Instance.ObtenerConfiguracion("TasaCambio", "45.50");
             txtIva.Text = Database.Instance.ObtenerConfiguracion("IVA", "16");
-            txtVersion.Text = "v1.2.0";
+            txtVersion.Text = $"v{UpdateService.Instance.GetCurrentVersion()}";
         }
         
         private void GuardarConfig_Click(object sender, RoutedEventArgs e)
@@ -37,10 +38,26 @@ namespace PuntoDeVenta.Views
             MessageBox.Show("Configuración guardada exitosamente", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         
-        private void BuscarActualizaciones_Click(object sender, RoutedEventArgs e)
+        private async void BuscarActualizaciones_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Verificar actualizaciones desde GitHub
-            MessageBox.Show("No hay actualizaciones disponibles.\nYa tienes la última versión.", "Actualizaciones", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                var updateInfo = await UpdateService.Instance.CheckForUpdatesAsync();
+                
+                if (updateInfo.IsNewVersionAvailable)
+                {
+                    var updateDialog = new UpdateDialog(updateInfo);
+                    updateDialog.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show($"Ya tienes la última versión (v{UpdateService.Instance.GetCurrentVersion()}).", "Actualizaciones", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("No se pudo verificar actualizaciones.\nVerifica tu conexión a internet.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }
