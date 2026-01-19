@@ -19,6 +19,9 @@ namespace PuntoDeVenta.Views
         
         private void CargarContactos()
         {
+            // Recalcular operaciones basándose en ventas/compras reales
+            Database.Instance.RecalcularOperacionesContactos();
+            
             _todosLosContactos = Database.Instance.ObtenerContactos();
             AplicarFiltros();
         }

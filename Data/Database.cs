@@ -338,6 +338,20 @@ namespace PuntoDeVenta.Data
                 ("@id", contactoId.Value));
         }
         
+        public void RecalcularOperacionesContactos()
+        {
+            using var connection = GetConnection();
+            
+            // Recalcular operaciones basándose en ventas y compras reales
+            ExecuteNonQuery(connection, @"
+                UPDATE Contactos 
+                SET TotalOperaciones = (
+                    SELECT COUNT(*) FROM Ventas WHERE ClienteId = Contactos.Id
+                ) + (
+                    SELECT COUNT(*) FROM Compras WHERE ProveedorId = Contactos.Id
+                )");
+        }
+        
         #endregion
         
         #region Productos CRUD
