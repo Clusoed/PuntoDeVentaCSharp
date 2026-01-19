@@ -1,6 +1,6 @@
 {
-    "version": "1.2.0",
+    "version": "1.3.0",
     "downloadUrl": "https://github.com/Clusoed/PuntoDeVentaCSharp/releases/latest",
-    "releaseNotes": "Sistema Punto de Venta v1.2.0 - Interfaz moderna con tema oscuro",
+    "releaseNotes": "v1.3.0 - Agregado footer con información del desarrollador Gutidev",
     "releaseDate": "2026-01-18"
 }

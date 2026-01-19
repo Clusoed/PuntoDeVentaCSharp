@@ -7,6 +7,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
         <!-- ========== HEADER ========== -->
@@ -216,5 +217,53 @@
                 </Grid>
             </Border>
         </Grid>
+        
+        <!-- ========== FOOTER DESARROLLADOR ========== -->
+        <Border Grid.Row="3" 
+                Background="{StaticResource BackgroundSecondaryBrush}" 
+                CornerRadius="10" 
+                Padding="15,12" 
+                Margin="0,20,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <!-- Desarrollado por -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="💻 Desarrollado por " 
+                               FontSize="13" 
+                               Foreground="{StaticResource TextMutedBrush}"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="Gutidev" 
+                               FontSize="14" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource AccentBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <!-- Instagram -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="25,0">
+                    <TextBlock Text="📷 " FontSize="14" VerticalAlignment="Center"/>
+                    <TextBlock Text="@gutidev_st" 
+                               FontSize="13" 
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource PrimaryBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <!-- Teléfono -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="📞 " FontSize="14" VerticalAlignment="Center"/>
+                    <TextBlock Text="+58 412 746 8948" 
+                               FontSize="13" 
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
