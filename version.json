@@ -1,6 +1,6 @@
 {
-    "version": "1.5.1",
+    "version": "1.5.2",
     "downloadUrl": "https://github.com/Clusoed/PuntoDeVentaCSharp/releases/latest/download/PuntoDeVenta.exe",
-    "releaseNotes": "v1.5.1 - Versión dinámica en sidebar y configuración, botón de actualizaciones mejorado",
+    "releaseNotes": "v1.5.2 - Fecha y hora en tiempo real en Dashboard y Nueva Venta, corrección contador de operaciones",
     "releaseDate": "2026-01-19"
 }
